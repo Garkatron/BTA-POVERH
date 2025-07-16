@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "momentum",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "Momentum",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
-    "Turnip Labs"
+    "@Garkatron"
   ],
   "contact": {
     "homepage": "",
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "examplemod.ExampleMod"
+      "deus.momentum.Momentum"
     ],
 		"beforeGameStart": [
-          "examplemod.ExampleMod"
+          "deus.momentum.Momentum"
 		],
 		"afterGameStart": [
-          "examplemod.ExampleMod"
+          "deus.momentum.Momentum"
 		],
 		"recipesReady": [
-          "examplemod.ExampleMod"
+          "deus.momentum.Momentum"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+    "momentum.mixins.json"
   ],
 
   "depends": {

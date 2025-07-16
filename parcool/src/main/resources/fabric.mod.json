@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.parcool.parcool"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.parcool.parcool"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.parcool.parcool"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.parcool.parcool"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+		"parcool.mixins.json"
   ],
 
   "depends": {
