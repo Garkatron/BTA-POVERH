@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "momentum",
+  "id": "poverhall",
   "version": "${version}",
 
-  "name": "Momentum",
+  "name": "Poverh-All",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
     "@Garkatron"
@@ -18,21 +18,9 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "deus.momentum.Momentum"
-    ],
-		"beforeGameStart": [
-          "deus.momentum.Momentum"
-		],
-		"afterGameStart": [
-          "deus.momentum.Momentum"
-		],
-		"recipesReady": [
-          "deus.momentum.Momentum"
-		]
+
 	},
   "mixins": [
-    "momentum.mixins.json"
   ],
 
   "depends": {
