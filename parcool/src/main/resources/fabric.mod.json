@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "parcool",
+  "version": "${version}",
+
+  "name": "Parcool",
+  "description": "This mod aims to help new BTA modders.",
+  "authors": [
+    "@Garkatron"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+	"icon": "icon.png",
+  "license": "CC0-1.0",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+			"deus.parcool.Parcool"
+    ],
+		"beforeGameStart": [
+			"deus.parcool.Parcool"
+		],
+		"afterGameStart": [
+			"deus.parcool.Parcool"
+		],
+		"recipesReady": [
+			"deus.parcool.Parcool"
+		]
+	},
+  "mixins": [
+		"parcool.mixins.json"
+  ],
+
+  "depends": {
+		"minecraft": "*",
+    "fabricloader": ">=0.15.5"
+  },
+  "suggests": {
+  }
+}

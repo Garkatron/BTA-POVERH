@@ -19,4 +19,4 @@ pluginManagement {
 		}
 	}
 }
-include("momentum")
+include("momentum", "parcool")
