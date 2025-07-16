@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "momentum",
+  "version": "${version}",
+
+  "name": "Momentum",
+  "description": "This mod aims to help new BTA modders.",
+  "authors": [
+    "@Garkatron"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+	"icon": "icon.png",
+  "license": "CC0-1.0",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+			"deus.momentum.Momentum"
+    ],
+		"beforeGameStart": [
+			"deus.momentum.Momentum"
+		],
+		"afterGameStart": [
+			"deus.momentum.Momentum"
+		],
+		"recipesReady": [
+			"deus.momentum.Momentum"
+		]
+	},
+  "mixins": [
+		"momentum.mixins.json"
+  ],
+
+  "depends": {
+		"minecraft": "*",
+    "fabricloader": ">=0.15.5"
+  },
+  "suggests": {
+  }
+}
