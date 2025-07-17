@@ -3,6 +3,7 @@
 ### Features
 
 * Stamina [x]
+* AirSpritingCheck
 * Player-Api []
 
 ### Tactical-Combat

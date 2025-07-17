@@ -34,9 +34,24 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 
 	@Inject(method = "onLivingUpdate()V", at = @At("HEAD"), remap = false)
 	private void playerTick(CallbackInfo ci) {
-		spritingTimer.update();
+		updateWallJump();
+		updateWallSliding();
+	}
 
-		System.out.println(wasSpriting);
+	@Unique
+	private void updateWallSliding() {
+		Player player = (Player) (Object) this;
+		if (parcool$isWallSliding()) {
+			player.fallDistance = 0;
+			player.yd = Math.max(player.yd, -0.3); // Descenso lento
+			player.xd *= 1.06;
+			player.zd *= 1.06;
+			momentum$setStamina(momentum$getStamina() - 0.6f);
+		}
+	}
+
+	@Unique private void updateWallJump() {
+		spritingTimer.update();
 
 		Player player = (Player)(Object)this;
 		Vector3f wallPos = new Vector3f();
@@ -99,7 +114,6 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 	}
 
 
-
 	@Unique
 	private void performWallJump(Player player, Vector3f wallPos) {
 		float yawRad = player.yRot * (float)Math.PI / 180F;
@@ -146,7 +160,7 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 	}
 
 	@Override
-	public boolean parcool$canWallJump() {
+	public boolean parcool$isCollidingWithWall() {
 		Player player = (Player)(Object)this;
 		if (player.world == null) {
 			return false;
@@ -186,5 +200,8 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 		return false;
 	}
 
-
+	@Override
+	public boolean parcool$isWallSliding() {
+		return momentum$isSprintingOnAir() && parcool$isCollidingWithWall();
+	}
 }

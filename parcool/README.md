@@ -1,5 +1,6 @@
 # Parcool
 
-* Wall-Jump
-* Wall-Climb
-* Double-Jump
+* Wall-Jump [x]
+* Wall-Sliding [x]
+* Wall-Climb []
+* Double-Jump []
