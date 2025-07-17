@@ -16,8 +16,8 @@ public abstract class MinecraftMixin
 	@Shadow
 	public GameSettings gameSettings;
 
-	@Shadow
-	public abstract void displayGuiScreen(Gui guiscreen);
+	// @Shadow
+	// public abstract void displayGuiScreen(Gui guiscreen);
 
 	@Inject(method = "startGame", at = @At(value = "TAIL"), remap = false)
 	private void startOfGameInit(CallbackInfo ci)

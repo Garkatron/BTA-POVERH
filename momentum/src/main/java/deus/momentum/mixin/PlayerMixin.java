@@ -1,6 +1,7 @@
 package deus.momentum.mixin;
 
 import com.mojang.nbt.tags.CompoundTag;
+import deus.momentum.interfaces.mixin.IPlayerMovementExtra;
 import deus.momentum.interfaces.mixin.IPlayerStamina;
 import deus.momentum.systems.stamina.StaminaConstants;
 import net.minecraft.core.entity.Entity;
@@ -17,13 +18,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Player.class, remap = false)
-public class PlayerMixin extends Mob implements IPlayerStamina
+public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayerMovementExtra
 {
 	@Shadow
 	public Gamemode gamemode;
+
+	@Shadow
+	public abstract boolean isInWall();
+
 	// From 0.0f to 100.0f
+	@Unique
 	public float stamina = 100.0f;
+	@Unique
 	public float prevStamina = 100.0f;
+	@Unique
 	public boolean exhausted = false;
 
 	@Override
@@ -40,7 +48,6 @@ public class PlayerMixin extends Mob implements IPlayerStamina
 				exhausted = true;
 			}
 		}
-
 		return hurtSuccess;
 	}
 
@@ -119,33 +126,43 @@ public class PlayerMixin extends Mob implements IPlayerStamina
 
 	@Override
 	@Unique
-	public float getStamina()
+	public float momentum$getStamina()
 	{
 		return stamina;
 	}
 
 	@Override
 	@Unique
-	public void setStamina(float stamina)
+	public void momentum$setStamina(float stamina)
 	{
 		this.stamina = stamina;
 	}
 
 	@Override
-	public boolean isExhausted()
+	public boolean momentum$isExhausted()
 	{
 		return exhausted;
 	}
 
 	@Override
-	public void setExhausted(boolean exhausted)
+	public void momentum$setExhausted(boolean exhausted)
 	{
 		this.exhausted = exhausted;
 	}
 
 	@Override
-	public float getPrevStamina()
+	public float momentum$getPrevStamina()
 	{
 		return prevStamina;
+	}
+
+	@Override
+	public void momentum$setSprintingOnAir() {
+		setSharedFlag(4, true);
+	}
+
+	@Override
+	public boolean momentum$isSprintingOnAir() {
+		return getSharedFlag(4);
 	}
 }

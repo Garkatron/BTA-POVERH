@@ -19,4 +19,7 @@ pluginManagement {
 		}
 	}
 }
+
+rootProject.name = "bta-poverh"
+
 include("momentum", "parcool")

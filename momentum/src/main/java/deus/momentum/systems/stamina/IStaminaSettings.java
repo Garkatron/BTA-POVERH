@@ -1,8 +1,9 @@
 package deus.momentum.systems.stamina;
 
 import net.minecraft.client.gui.options.components.BooleanOptionComponent;
+import net.minecraft.client.option.OptionBoolean;
 
 public interface IStaminaSettings
 {
-	public BooleanOptionComponent initialRunSetupFinished();
+	OptionBoolean momentum$initialRunSetupFinished();
 }

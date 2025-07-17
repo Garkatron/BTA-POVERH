@@ -88,7 +88,7 @@ repositories {
 
 dependencies {
 	implementation(project(":momentum"))
-    minecraft("::${bta_version}")
+	minecraft("::${bta_version}")
     mappings(loom.layered {})
 
     modRuntimeOnly("objects:client:43db9b498cb67058d2e12d394e6507722e71bb45") // https://piston-data.mojang.com/v1/objects/43db9b498cb67058d2e12d394e6507722e71bb45/client.jar
@@ -132,13 +132,13 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = JavaVersion.VERSION_16
+	targetCompatibility = JavaVersion.VERSION_16
     withSourcesJar()
 }
 
 tasks.compileJava {
-    options.release.set(8)
+    options.release.set(16)
 }
 
 tasks.jar {

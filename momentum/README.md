@@ -2,8 +2,8 @@
 
 ### Features
 
-* Stamina
-* Player-Api
+* Stamina [x]
+* Player-Api []
 
 ### Tactical-Combat
 * BunnyHopp (csgo)

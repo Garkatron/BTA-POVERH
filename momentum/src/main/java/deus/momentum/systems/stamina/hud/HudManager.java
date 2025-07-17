@@ -1,8 +1,5 @@
 package deus.momentum.systems.stamina.hud;
 
-import net.minecraft.client.gui.hud.ComponentAnchor;
-import net.minecraft.client.gui.hud.HudComponents;
-import net.minecraft.client.gui.hud.SnapLayout;
 import net.minecraft.client.gui.hud.component.ComponentAnchor;
 import net.minecraft.client.gui.hud.component.HudComponents;
 import net.minecraft.client.gui.hud.component.layout.LayoutSnap;

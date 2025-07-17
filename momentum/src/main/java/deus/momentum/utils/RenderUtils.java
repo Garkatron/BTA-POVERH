@@ -7,13 +7,13 @@ import net.minecraft.client.gui.Gui;
 
 public class RenderUtils
 {
-	//public static Minecraft mc = Minecraft.getMinecraft(Minecraft.class);
-	public static void bindTexture(String texture)
-	{
-//		int texId = mc.renderGlobal.getTexture(texture);
+	// public static Minecraft mc = Minecraft.getMinecraft();
+//	public static void bindTexture(String texture)
+//	{
+//		int texId = mc.textureManager.bufferedTextures.get(texture);
 //		System.out.println("Texture ID: " + texId);
-//		mc.renderEngine.bindTexture(texId);
-	}
+//		mc.textureManager.bindTexture(texId);
+//	}
 
 	public static void drawTexturedModalRect(Gui gui, double x, double y, double u, double v, double width, double height, double scale) {
 		double uScale = scale;

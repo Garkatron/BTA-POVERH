@@ -4,10 +4,13 @@
   "package": "deus.momentum.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "EntityMixin"
+    "EntityMixin",
+    "PlayerMixin"
   ],
   "client": [
-    "MinecraftMixin"
+    "GameSettingsMixin",
+    "MinecraftMixin",
+    "PlayerLocalMixin"
   ],
   "injectors": {
     "defaultRequire": 1
