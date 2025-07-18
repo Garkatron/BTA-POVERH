@@ -1,18 +1,23 @@
-package deus.parcool;
+package deus.parkube;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.core.data.gamerule.GameRuleBoolean;
+import net.minecraft.core.data.gamerule.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.GameStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
 
 
-public class Parcool implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
-    public static final String MOD_ID = "parcool";
+public class Parkube implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
+    public static final String MOD_ID = "parkube";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    @Override
+
+	public static GameRuleBoolean PARKUBE_USE_STAMINA = GameRules.register(new GameRuleBoolean("parkubeUseStamina", true));
+
+	@Override
     public void onInitialize() {
-        LOGGER.info("ExampleMod initialized.");
+        LOGGER.info("Parkube initialized.");
     }
 
 	@Override

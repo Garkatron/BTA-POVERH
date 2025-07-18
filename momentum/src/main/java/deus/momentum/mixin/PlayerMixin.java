@@ -17,6 +17,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static deus.momentum.Momentum.*;
+
+
 @Mixin(value = Player.class, remap = false)
 public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayerMovementExtra
 {
@@ -39,13 +42,15 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 	{
 		boolean hurtSuccess = super.hurt(attacker, damage, type);
 
-		if (hurtSuccess)
-		{
-			stamina -= (damage / 2f) * StaminaConstants.staminaLossPerHeart;
-			if (stamina < 0)
+		if (!world.getGameRuleValue(DISABLE_STAMINA) && !world.getGameRuleValue(DISABLE_STAMINA_ON_HURT)) {
+			if (hurtSuccess)
 			{
-				stamina = 0;
-				exhausted = true;
+				stamina -= (damage / 2f) * StaminaConstants.staminaLossPerHeart;
+				if (stamina < 0)
+				{
+					stamina = 0;
+					exhausted = true;
+				}
 			}
 		}
 		return hurtSuccess;
@@ -54,12 +59,14 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 	@Inject(method = "onDeath", at = @At("TAIL"), remap = false)
 	private void death(Entity entity, CallbackInfo ci)
 	{
+		if (world.getGameRuleValue(DISABLE_STAMINA)) return;
 		stamina = 100;
 		exhausted = false;
 	}
 
 	@Inject(method = "jump", at = @At("TAIL"), remap = false)
 	public void afterJump(CallbackInfo ci) {
+		if (world.getGameRuleValue(DISABLE_STAMINA) || world.getGameRuleValue(DISABLE_STAMINA_ON_JUMP)) return;
 		stamina -= 2.5f;
 	}
 
@@ -81,11 +88,11 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 	private void playerTick(CallbackInfo ci)
 	{
 		prevStamina = stamina;
-		if (!this.gamemode.equals(Gamemode.creative))
+		if (!this.gamemode.equals(Gamemode.creative) && !world.getGameRuleValue(DISABLE_STAMINA))
 		{
 			if (!exhausted)
 			{
-				if (this.isSprinting())
+				if (this.isSprinting() && !world.getGameRuleValue(DISABLE_STAMINA_ON_SPRITING))
 				{
 					stamina -= StaminaConstants.exhaustionSpeed / 20f;
 				}
@@ -173,6 +180,8 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 
 	@Override
 	public boolean momentum$spendStamina(float amount) {
+		if (world.getGameRuleValue(DISABLE_STAMINA)) return false;
+
 		if (amount <= 0.0f) {
 			stamina = 0;
 			return true;

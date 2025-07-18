@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+import static deus.momentum.Momentum.DISABLE_STAMINA;
+
 public class StaminaBarComponent extends HudComponentMovable {
 	private int width = 182;
 	private int height = 5;
@@ -33,7 +35,8 @@ public class StaminaBarComponent extends HudComponentMovable {
 
 	@Override
 	public boolean isVisible(Minecraft mc) {
-		if (mc.thePlayer == null) {
+		boolean b = mc.thePlayer.world.getGameRuleValue(DISABLE_STAMINA);
+		if ( mc.thePlayer == null || b) {
 			return false;
 		}
 		IPlayerStamina player = (IPlayerStamina) mc.thePlayer;

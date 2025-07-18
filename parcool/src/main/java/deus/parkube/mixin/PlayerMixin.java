@@ -1,12 +1,12 @@
-package deus.parcool.mixin;
+package deus.parkube.mixin;
 
 import deus.momentum.interfaces.mixin.IPlayerMovementExtra;
 import deus.momentum.interfaces.mixin.IPlayerStamina;
 import deus.momentum.utils.TicksTimer;
-import deus.parcool.interfaces.IPlayerParcool;
+import deus.parkube.Parkube;
+import deus.parkube.interfaces.IPlayerParkube;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.achievement.stat.Stat;
-import net.minecraft.core.achievement.stat.StatList;
 import net.minecraft.core.entity.Mob;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.util.helper.MathHelper;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = Player.class, remap = false)
-public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayerMovementExtra, IPlayerStamina {
+public abstract class PlayerMixin extends Mob implements IPlayerParkube, IPlayerMovementExtra, IPlayerStamina {
 
 	// === Fields ===
 	@Shadow public abstract void addStat(Stat statbase, int i);
@@ -38,9 +38,6 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 	@Unique private int ticksRemainingWallJump = 0;
 	@Unique private Vector3f lastWallJumpPos = null;
 	@Unique private boolean canWallJump = true;
-
-	@Unique private int maxJumps = 1;
-	@Unique private int remainingJumps = maxJumps;
 
 	// === Constructor ===
 	public PlayerMixin(@Nullable World world) {
@@ -62,11 +59,11 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 
 	@Unique
 	private void updateWallClimb(Player player) {
-		if (!momentum$isExhausted() && parcool$isCollidingWithWall() && mc.gameSettings.keyInteract.isPressed()) {
+		if (!momentum$isExhausted() && parkube$isCollidingWithWall() && mc.gameSettings.keyInteract.isPressed()) {
 			player.yd = Math.max(player.yd, 0);
 			player.xd = 0;
 			player.zd = 0;
-			momentum$spendStamina(3.5f);
+			parkubeUseStamina(3.5f);
 		}
 	}
 
@@ -74,18 +71,18 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 
 	@Unique
 	private void updateWallSliding(Player player) {
-		if (!momentum$isExhausted() && parcool$isWallSliding()) {
+		if (!momentum$isExhausted() && parkube$isWallSliding()) {
 			player.fallDistance = 0;
 			player.yd = Math.max(player.yd, -0.3);
 			player.xd *= 1.06;
 			player.zd *= 1.06;
-			momentum$spendStamina(0.6f);
-		} else if (!momentum$isExhausted() && isSneaking() && parcool$isCollidingWithWall()) {
+			parkubeUseStamina(0.6f);
+		} else if (!momentum$isExhausted() && isSneaking() && parkube$isCollidingWithWall()) {
 			player.fallDistance = 0;
 			player.yd = Math.max(player.yd, -0.05);
 			player.xd = 0;
 			player.zd = 0;
-			momentum$spendStamina(0.8f);
+			parkubeUseStamina(0.8f);
 		}
 	}
 
@@ -100,7 +97,7 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 		Vector3f wallPos = new Vector3f();
 		if (ticksRemainingWallJump > 0) ticksRemainingWallJump--;
 
-		boolean wall = parcool$checkWallCollision(player, player.world, player.bbWidth + 0.75f, wallPos);
+		boolean wall = parkube$checkWallCollision(player, player.world, player.bbWidth + 0.75f, wallPos);
 
 		if (!wall) {
 			lastWallJumpPos = null;
@@ -118,8 +115,14 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 				ticksRemainingWallJump = ticksDelayWallJump;
 				canWallJump = false;
 				lastWallJumpPos = new Vector3f(wallPos);
-				momentum$spendStamina(8);
+				parkubeUseStamina(8);
 			}
+		}
+	}
+
+	@Unique private void parkubeUseStamina(float amount) {
+		if (world.getGameRuleValue(Parkube.PARKUBE_USE_STAMINA)) {
+			momentum$spendStamina(amount);
 		}
 	}
 
@@ -162,22 +165,22 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 	// === IPlayerParcool Implementation ===
 
 	@Override
-	public boolean parcool$isCollidingWithWall() {
+	public boolean parkube$isCollidingWithWall() {
 		Player player = (Player)(Object)this;
 		if (player.world == null) return false;
-		return parcool$checkWallCollision(player, player.world, player.bbWidth + 0.8f, null);
+		return parkube$checkWallCollision(player, player.world, player.bbWidth + 0.8f, null);
 	}
 
 	@Override
-	public Vector3f parcool$getWallPosition() {
+	public Vector3f parkube$getWallPosition() {
 		Player player = (Player)(Object)this;
 		if (player.world == null) return new Vector3f(0, 0, 0);
 		Vector3f result = new Vector3f(0, 0, 0);
-		return parcool$checkWallCollision(player, player.world, player.bbWidth + 0.8f, result) ? result : new Vector3f(0, 0, 0);
+		return parkube$checkWallCollision(player, player.world, player.bbWidth + 0.8f, result) ? result : new Vector3f(0, 0, 0);
 	}
 
 	@Override
-	public boolean parcool$checkWallCollision(Player player, World world, float bbWidth, Vector3f outPos) {
+	public boolean parkube$checkWallCollision(Player player, World world, float bbWidth, Vector3f outPos) {
 		for (int i = 0; i < 8; ++i) {
 			float f = ((i & 1) - 0.5F) * bbWidth * 0.9F;
 			float f1 = (((i >> 1) & 1) - 0.5F) * 0.1F;
@@ -196,7 +199,7 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 	}
 
 	@Override
-	public boolean parcool$isWallSliding() {
-		return momentum$isSprintingOnAir() && parcool$isCollidingWithWall();
+	public boolean parkube$isWallSliding() {
+		return momentum$isSprintingOnAir() && parkube$isCollidingWithWall();
 	}
 }

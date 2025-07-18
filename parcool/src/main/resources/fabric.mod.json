@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "parcool",
+  "id": "parkube",
   "version": "${version}",
 
-  "name": "Parcool",
+  "name": "Parkube",
   "description": "This mod aims to add cool parkour features!",
   "authors": [
     "@Garkatron"
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"deus.parcool.Parcool"
+			"deus.parkube.Parkube"
     ],
 		"beforeGameStart": [
-			"deus.parcool.Parcool"
+			"deus.parkube.Parkube"
 		],
 		"afterGameStart": [
-			"deus.parcool.Parcool"
+			"deus.parkube.Parkube"
 		],
 		"recipesReady": [
-			"deus.parcool.Parcool"
+			"deus.parkube.Parkube"
 		]
 	},
   "mixins": [
-		"parcool.mixins.json"
+		"parkube.mixins.json"
   ],
 
   "depends": {

@@ -5,6 +5,8 @@ import deus.momentum.systems.stamina.hud.HudManager;
 import deus.momentum.systems.stamina.network.NetManager;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.render.texture.stitcher.TextureRegistry;
+import net.minecraft.core.data.gamerule.GameRuleBoolean;
+import net.minecraft.core.data.gamerule.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.GameStartEntrypoint;
@@ -23,7 +25,10 @@ public class Momentum implements ModInitializer, RecipeEntrypoint, GameStartEntr
 	public static IStaminaSettings options;
 
 	public static final HudManager hudManager = new HudManager();
-
+	public static GameRuleBoolean DISABLE_STAMINA = GameRules.register(new GameRuleBoolean("disableStamina", false));
+	public static GameRuleBoolean DISABLE_STAMINA_ON_SPRITING = GameRules.register(new GameRuleBoolean("disableStaminaOnSpriting", false));
+	public static GameRuleBoolean DISABLE_STAMINA_ON_JUMP = GameRules.register(new GameRuleBoolean("disableStaminaOnJump", false));
+	public static GameRuleBoolean DISABLE_STAMINA_ON_HURT = GameRules.register(new GameRuleBoolean("disableStaminaOnHurt", false));
 
 	@Override
     public void onInitialize() {

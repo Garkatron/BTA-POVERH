@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "deus.parcool.mixin",
+  "package": "deus.parkube.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "PlayerMixin"
