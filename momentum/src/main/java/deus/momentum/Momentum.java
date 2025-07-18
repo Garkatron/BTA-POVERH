@@ -27,7 +27,7 @@ public class Momentum implements ModInitializer, RecipeEntrypoint, GameStartEntr
 
 	@Override
     public void onInitialize() {
-		//netManager.onInitialize();
+		netManager.onInitialize();
         LOGGER.info("ExampleMod initialized.");
     }
 

@@ -4,4 +4,3 @@
 * Wall-Sliding [x]
 * Hold on wall [x]
 * Wall-Climb [x]
-* Double-Jump []
