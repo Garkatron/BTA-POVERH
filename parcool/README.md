@@ -2,5 +2,6 @@
 
 * Wall-Jump [x]
 * Wall-Sliding [x]
-* Wall-Climb []
+* Hold on wall [x]
+* Wall-Climb [x]
 * Double-Jump []

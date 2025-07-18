@@ -10,6 +10,7 @@ import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.util.helper.MathHelper;
 import net.minecraft.core.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,34 +27,56 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 	@Unique private int ticksRemainingWallJump = 0; // Remaining ticks until next wall jump
 	@Unique private Vector3f lastWallJumpPos = null;
 	@Unique private boolean canWallJump = true;
+	@Unique private Minecraft mc = Minecraft.getMinecraft();
+
 
 	public PlayerMixin(@Nullable World world) {
 		super(world);
 	}
 
 
+
 	@Inject(method = "onLivingUpdate()V", at = @At("HEAD"), remap = false)
 	private void playerTick(CallbackInfo ci) {
-		updateWallJump();
-		updateWallSliding();
+		Player player = (Player) (Object) this;
+		updateWallJump(player);
+		updateWallClimb(player);
+		updateWallSliding(player);
+	}
+
+	@Unique private void updateWallClimb(Player player) {
+		if (!momentum$isExhausted() && parcool$isCollidingWithWall() && mc.gameSettings.keyInteract.isPressed()) {
+			player.yd = Math.max(player.yd, 0);
+			player.xd = 0;
+			player.zd = 0;
+			momentum$spendStamina(3.5f);
+			//momentum$setStamina(momentum$getStamina() - );
+		}
 	}
 
 	@Unique
-	private void updateWallSliding() {
-		Player player = (Player) (Object) this;
-		if (parcool$isWallSliding()) {
+	private void updateWallSliding(Player player) {
+		if (!momentum$isExhausted() && parcool$isWallSliding()) {
 			player.fallDistance = 0;
 			player.yd = Math.max(player.yd, -0.3); // Descenso lento
 			player.xd *= 1.06;
 			player.zd *= 1.06;
-			momentum$setStamina(momentum$getStamina() - 0.6f);
+			momentum$spendStamina(0.6f);//momentum$setStamina(momentum$getStamina() - );
+		} else if (!momentum$isExhausted() && isSneaking() && parcool$isCollidingWithWall()){
+			player.fallDistance = 0;
+			player.yd = Math.max(player.yd, -0.05);
+			player.xd = 0;
+			player.zd = 0;
+			momentum$spendStamina(0.8f);
+			//momentum$setStamina(momentum$getStamina() - );
 		}
 	}
 
-	@Unique private void updateWallJump() {
+	@Unique private void updateWallJump(Player player) {
+		if (momentum$isExhausted()) return;
+
 		spritingTimer.update();
 
-		Player player = (Player)(Object)this;
 		Vector3f wallPos = new Vector3f();
 
 		// Decrement wall jump cooldown
@@ -61,10 +84,8 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 			ticksRemainingWallJump--;
 		}
 
-		// Verifica si hay una pared
 		boolean wall = parcool$checkWallCollision(player, player.world, player.bbWidth + 0.75f, wallPos);
 
-		// Si el jugador ya no está tocando una pared, limpiar la última
 		if (!wall) {
 			lastWallJumpPos = null;
 			canWallJump = true;
@@ -75,13 +96,14 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 			spritingTimer.restart();
 		}
 
-		if (Minecraft.getMinecraft().thePlayer.input.jump && wall && !player.noPhysics && ticksRemainingWallJump <= 0 && wasSpriting) {
+		if (mc.thePlayer.input.jump && wall && !player.noPhysics && ticksRemainingWallJump <= 0 && wasSpriting) {
 			if (canWallJump && !isSameWall(wallPos, lastWallJumpPos)) {
 				performWallJump(player, wallPos);
 				ticksRemainingWallJump = ticksDelayWallJump;
 				canWallJump = false;
 				lastWallJumpPos = new Vector3f(wallPos);
-				momentum$setStamina(momentum$getStamina() - 8);
+				momentum$spendStamina(10);
+				//momentum$setStamina(momentum$getStamina() - 10);
 			}
 		}
 	}
@@ -97,23 +119,6 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 	}
 
 
-	@Inject(method = "jump", at = @At("HEAD"), cancellable = true, remap = false)
-	protected void jump(CallbackInfo ci) {
-		ci.cancel();
-		Player player = (Player)(Object)this;
-
-		if (!player.noPhysics) {
-			// Regular jump when on ground
-			player.yd = 0.42;
-			if (player.isSprinting()) {
-				float f = player.yRot * 0.01745329F;
-				player.xd -= (double)(MathHelper.sin(f) * 0.2F);
-				player.zd += (double)(MathHelper.cos(f) * 0.2F);
-			}
-		}
-	}
-
-
 	@Unique
 	private void performWallJump(Player player, Vector3f wallPos) {
 		float yawRad = player.yRot * (float)Math.PI / 180F;
@@ -121,13 +126,12 @@ public abstract class PlayerMixin extends Mob implements IPlayerParcool, IPlayer
 		// Forward
 		float forwardX = -MathHelper.sin(yawRad);
 		float forwardZ = MathHelper.cos(yawRad);
-		Vector3f forward = new Vector3f(forwardX, 0.52f, forwardZ);
+		Vector3f forward = new Vector3f(forwardX, 0.44f, forwardZ);
 
 		// - wall direction
 		Vector3f right = new Vector3f(forwardZ, 0, -forwardX);
 
 		// Vector to wall
-
 		Vector3f toWall = new Vector3f(
 			wallPos.x - (float)player.x,
 			0,

@@ -58,6 +58,11 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 		exhausted = false;
 	}
 
+	@Inject(method = "jump", at = @At("TAIL"), remap = false)
+	public void afterJump(CallbackInfo ci) {
+		stamina -= 2.5f;
+	}
+
 	@Inject(method = "addAdditionalSaveData", at = @At("TAIL"), remap = false)
 	private void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci)
 	{
@@ -83,12 +88,6 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 				if (this.isSprinting())
 				{
 					stamina -= StaminaConstants.exhaustionSpeed / 20f;
-
-					if (stamina <= 0)
-					{
-						stamina = 0;
-						exhausted = true;
-					}
 				}
 				else
 				{
@@ -99,6 +98,12 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 			{
 				// We're exhausted, only recover stamina.
 				recoverStamina();
+			}
+
+			if (stamina <= 0)
+			{
+				stamina = 0;
+				exhausted = true;
 			}
 
 			if (exhausted)
@@ -165,4 +170,20 @@ public abstract class PlayerMixin extends Mob implements IPlayerStamina, IPlayer
 	public boolean momentum$isSprintingOnAir() {
 		return getSharedFlag(4);
 	}
+
+	@Override
+	public boolean momentum$spendStamina(float amount) {
+		if (amount <= 0.0f) {
+			stamina = 0;
+			return true;
+		}
+
+		if (momentum$isExhausted()) {
+			return false;
+		}
+
+		stamina -= amount;
+		return true;
+	}
+
 }

@@ -7,4 +7,5 @@ public interface IPlayerStamina
 	boolean momentum$isExhausted();
 	void momentum$setExhausted(boolean exhausted);
 	float momentum$getPrevStamina();
+	boolean momentum$spendStamina(float amount);
 }

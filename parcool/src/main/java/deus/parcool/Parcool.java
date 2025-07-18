@@ -8,7 +8,7 @@ import turniplabs.halplibe.util.RecipeEntrypoint;
 
 
 public class Parcool implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
-    public static final String MOD_ID = "examplemod";
+    public static final String MOD_ID = "parcool";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     @Override
     public void onInitialize() {
