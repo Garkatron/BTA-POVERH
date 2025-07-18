@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Momentum",
-  "description": "This mod aims to help new BTA modders.",
+  "description": "A library with player movement related features.",
   "authors": [
     "@Garkatron"
   ],

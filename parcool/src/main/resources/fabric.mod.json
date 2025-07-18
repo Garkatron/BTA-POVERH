@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Parcool",
-  "description": "This mod aims to help new BTA modders.",
+  "description": "This mod aims to add cool parkour features!",
   "authors": [
     "@Garkatron"
   ],
