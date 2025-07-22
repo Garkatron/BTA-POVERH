@@ -10,7 +10,9 @@
   "client": [
     "GameSettingsMixin",
     "MinecraftMixin",
-    "PlayerLocalMixin"
+    "OptionsPagesMixin",
+    "PlayerLocalMixin",
+    "PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
